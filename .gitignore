@@ -38,3 +38,7 @@ build/
 # Системные файлы (macOS/Windows)
 .DS_Store
 Thumbs.db
+
+.mvn/
+mvnw
+mvnw.cmd
