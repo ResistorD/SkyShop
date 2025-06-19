@@ -30,7 +30,6 @@ class BasketServiceTest {
     void setUp() {
         productBasket = mock(ProductBasket.class);
         storageService = mock(StorageService.class);
-
         basketService = new BasketService(productBasket, storageService);
     }
 
@@ -44,11 +43,13 @@ class BasketServiceTest {
     @Test
     void shouldAddProductWhenExists() {
         when(storageService.getProductById(validId)).thenReturn(Optional.of(dummyProduct));
+        when(dummyProduct.getId()).thenReturn(validId); // <-- вот это важно
 
         basketService.addProduct(validId);
 
         verify(productBasket, times(1)).addProduct(validId);
     }
+
 
     @Test
     void shouldReturnEmptyUserBasketIfBasketIsEmpty() {
@@ -57,8 +58,8 @@ class BasketServiceTest {
         UserBasket result = basketService.getUserBasket();
 
         assertNotNull(result);
-        assertTrue(result.items().isEmpty());
-        assertEquals(0, result.total());
+        assertTrue(result.getItems().isEmpty());
+        assertEquals(0, result.getTotal());
     }
 
     @Test
@@ -69,7 +70,7 @@ class BasketServiceTest {
 
         UserBasket result = basketService.getUserBasket();
 
-        assertEquals(1, result.items().size());
-        assertEquals(200.0, result.total());
+        assertEquals(1, result.getItems().size());
+        assertEquals(200.0, result.getTotal());
     }
 }
